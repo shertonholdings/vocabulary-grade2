@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expanded Vocabulary Exercise</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+        }
+        #logo {
+            width: 150px; /* Adjust the logo size as needed */
+            margin-bottom: 20px;
+        }
+        .word {
+            font-size: 24px;
+            margin: 20px 0;
+            color: blue;
+            font-weight: bold;
+        }
+        .sentence {
+            font-size: 20px;
+            margin: 20px 0;
+        }
+        .feedback {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .next {
+            margin-top: 30px;
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: none;
+        }
+        .next:hover {
+            background-color: #388e3c;
+        }
+        .more-lessons {
+            margin-top: 40px;
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .more-lessons:hover {
+            background-color: #388e3c;
+        }
+    </style>
+</head>
+<body>
+
+<img id="logo" src="https://i.imgur.com/mwpTHJj.png" alt="Logo">
+<h1>Expanded Vocabulary Exercise</h1>
+<p>Please select the correct meaning of the word.</p>
+
+<div id="exercise-section">
+    <div class="word" id="word"></div>
+    <div class="sentence" id="meaning-section">
+        <select id="meaning-select"></select>
+    </div>
+    <div class="feedback" id="meaning-feedback"></div>
+
+    <button id="meaning-submit">Submit Meaning</button>
+
+    <div class="sentence" id="sentence-section" style="display: none;">
+        <p>Please select the correct sentence using the word:</p>
+        <select id="sentence-select"></select>
+    </div>
+    <div class="feedback" id="sentence-feedback"></div>
+
+    <button id="sentence-submit" style="display: none;">Submit Sentence</button>
+</div>
+
+<a href="#" class="next" id="next-button">Next Exercise</a>
+
+<!-- More Lessons Button -->
+<a href="https://sites.google.com/view/grades-2/home" class="more-lessons">More Lessons</a>
+
+<script>
+    const exercises = [
+        {
+            word: "brave",
+            meanings: ["Not afraid to face danger.", "A type of animal."],
+            correctMeaning: "Not afraid to face danger.",
+            sentences: [
+                "The brave knight saved the village.",
+                "The brave flower grew in the dark."
+            ],
+            correctSentence: "The brave knight saved the village."
+        },
+        {
+            word: "curious",
+            meanings: ["Wanting to know more.", "A type of toy."],
+            correctMeaning: "Wanting to know more.",
+            sentences: [
+                "The curious cat explored the house.",
+                "The curious car drove fast."
+            ],
+            correctSentence: "The curious cat explored the house."
+        },
+        {
+            word: "delightful",
+            meanings: ["Very pleasing or charming.", "A type of fruit."],
+            correctMeaning: "Very pleasing or charming.",
+            sentences: [
+                "The delightful cake was enjoyed by all.",
+                "The delightful fish swam in the ocean."
+            ],
+            correctSentence: "The delightful cake was enjoyed by all."
+        },
+        {
+            word: "eager",
+            meanings: ["Very enthusiastic and excited.", "A type of tree."],
+            correctMeaning: "Very enthusiastic and excited.",
+            sentences: [
+                "She was eager to learn new things.",
+                "The eager cloud floated in the sky."
+            ],
+            correctSentence: "She was eager to learn new things."
+        },
+        {
+            word: "generous",
+            meanings: ["Willing to give more than is necessary.", "A type of flower."],
+            correctMeaning: "Willing to give more than is necessary.",
+            sentences: [
+                "The generous man helped everyone.",
+                "The generous mountain rose high."
+            ],
+            correctSentence: "The generous man helped everyone."
+        },
+        {
+            word: "hilarious",
+            meanings: ["Very funny.", "A type of fish."],
+            correctMeaning: "Very funny.",
+            sentences: [
+                "The hilarious joke made everyone laugh.",
+                "The hilarious tree danced in the wind."
+            ],
+            correctSentence: "The hilarious joke made everyone laugh."
+        },
+        {
+            word: "joyful",
+            meanings: ["Full of joy.", "A type of fruit."],
+            correctMeaning: "Full of joy.",
+            sentences: [
+                "The joyful children played in the park.",
+                "The joyful clock chimed at noon."
+            ],
+            correctSentence: "The joyful children played in the park."
+        },
+        {
+            word: "kind",
+            meanings: ["Being friendly and helpful.", "A type of food."],
+            correctMeaning: "Being friendly and helpful.",
+            sentences: [
+                "The kind girl shared her toys.",
+                "The kind mountain stood tall."
+            ],
+            correctSentence: "The kind girl shared her toys."
+        },
+        {
+            word: "lively",
+            meanings: ["Full of life and energy.", "A type of plant."],
+            correctMeaning: "Full of life and energy.",
+            sentences: [
+                "The lively puppy played with the ball.",
+                "The lively stone lay on the ground."
+            ],
+            correctSentence: "The lively puppy played with the ball."
+        },
+        {
+            word: "mysterious",
+            meanings: ["Difficult to understand or explain.", "A type of animal."],
+            correctMeaning: "Difficult to understand or explain.",
+            sentences: [
+                "The mysterious box had a secret inside.",
+                "The mysterious flower bloomed at night."
+            ],
+            correctSentence: "The mysterious box had a secret inside."
+        },
+        {
+            word: "noble",
+            meanings: ["Having high moral qualities.", "A type of book."],
+            correctMeaning: "Having high moral qualities.",
+            sentences: [
+                "The noble prince helped the poor.",
+                "The noble tree stood strong."
+            ],
+            correctSentence: "The noble prince helped the poor."
+        },
+        {
+            word: "playful",
+            meanings: ["Fond of games and fun.", "A type of toy."],
+            correctMeaning: "Fond of games and fun.",
+            sentences: [
+                "The playful kitten chased its tail.",
+                "The playful cloud drifted by."
+            ],
+            correctSentence: "The playful kitten chased its tail."
+        },
+        {
+            word: "quiet",
+            meanings: ["Making little or no noise.", "A type of bird."],
+            correctMeaning: "Making little or no noise.",
+            sentences: [
+                "The quiet library was peaceful.",
+                "The quiet car drove slowly."
+            ],
+            correctSentence: "The quiet library was peaceful."
+        },
+        {
+            word: "respectful",
+            meanings: ["Showing politeness and honor.", "A type of game."],
+            correctMeaning: "Showing politeness and honor.",
+            sentences: [
+                "The respectful student listened to the teacher.",
+                "The respectful tree grew tall."
+            ],
+            correctSentence: "The respectful student listened to the teacher."
+        },
+        {
+            word: "silly",
+            meanings: ["Showing a lack of common sense; foolish.", "A type of toy."],
+            correctMeaning: "Showing a lack of common sense; foolish.",
+            sentences: [
+                "The silly clown made everyone laugh.",
+                "The silly book was very interesting."
+            ],
+            correctSentence: "The silly clown made everyone laugh."
+        },
+        {
+            word: "thoughtful",
+            meanings: ["Showing consideration for others.", "A type of book."],
+            correctMeaning: "Showing consideration for others.",
+            sentences: [
+                "The thoughtful gift made her smile.",
+                "The thoughtful rock was very heavy."
+            ],
+            correctSentence: "The thoughtful gift made her smile."
+        },
+        {
+            word: "unique",
+            meanings: ["Being the only one of its kind.", "A type of stone."],
+            correctMeaning: "Being the only one of its kind.",
+            sentences: [
+                "Each snowflake is unique.",
+                "The unique cloud looked like a dragon."
+            ],
+            correctSentence: "Each snowflake is unique."
+        },
+        {
+            word: "vibrant",
+            meanings: ["Full of energy and enthusiasm.", "A type of flower."],
+            correctMeaning: "Full of energy and enthusiasm.",
+            sentences: [
+                "The vibrant colors brightened the room.",
+                "The vibrant tree stood in the park."
+            ],
+            correctSentence: "The vibrant colors brightened the room."
+        },
+    ];
+
+    let currentExercise = 0;
+
+    const wordElement = document.getElementById('word');
+    const meaningSelect = document.getElementById('meaning-select');
+    const meaningFeedbackElement = document.getElementById('meaning-feedback');
+    const meaningSubmitButton = document.getElementById('meaning-submit');
+    
+    const sentenceSection = document.getElementById('sentence-section');
+    const sentenceSelect = document.getElementById('sentence-select');
+    const sentenceFeedbackElement = document.getElementById('sentence-feedback');
+    const sentenceSubmitButton = document.getElementById('sentence-submit');
+    
+    const nextButton = document.getElementById('next-button');
+
+    function displayExercise() {
+        const exercise = exercises[currentExercise];
+        wordElement.textContent = exercise.word;
+
+        // Populate meanings
+        meaningSelect.innerHTML = '';
+        exercise.meanings.forEach((meaning) => {
+            const option = document.createElement('option');
+            option.value = meaning;
+            option.textContent = meaning;
+            meaningSelect.appendChild(option);
+        });
+
+        // Reset feedback
+        meaningFeedbackElement.textContent = '';
+        sentenceFeedbackElement.textContent = '';
+        sentenceSection.style.display = 'none';
+        sentenceSubmitButton.style.display = 'none';
+        nextButton.style.display = 'none';
+    }
+
+    meaningSubmitButton.addEventListener('click', () => {
+        const meaningSelected = meaningSelect.value;
+
+        // Check meaning
+        if (meaningSelected === exercises[currentExercise].correctMeaning) {
+            meaningFeedbackElement.innerHTML = `<p style="color: green;">Correct Meaning!</p>`;
+            // Show sentence section
+            sentenceSection.style.display = 'block';
+            sentenceSubmitButton.style.display = 'block';
+            // Populate sentences
+            sentenceSelect.innerHTML = '';
+            exercises[currentExercise].sentences.forEach((sentence) => {
+                const option = document.createElement('option');
+                option.value = sentence;
+                option.textContent = sentence;
+                sentenceSelect.appendChild(option);
+            });
+        } else {
+            meaningFeedbackElement.innerHTML = `<p style="color: red;">Incorrect Meaning! The correct meaning is: ${exercises[currentExercise].correctMeaning}</p>`;
+        }
+    });
+
+    sentenceSubmitButton.addEventListener('click', () => {
+        const sentenceSelected = sentenceSelect.value;
+
+        // Check sentence
+        if (sentenceSelected === exercises[currentExercise].correctSentence) {
+            sentenceFeedbackElement.innerHTML = `<p style="color: green;">Correct Sentence! Well done!</p>`;
+            nextButton.style.display = 'block';
+        } else {
+            sentenceFeedbackElement.innerHTML = `<p style="color: red;">Incorrect Sentence! The correct sentence is: ${exercises[currentExercise].correctSentence}</p>`;
+        }
+    });
+
+    nextButton.addEventListener('click', () => {
+        currentExercise = (currentExercise + 1) % exercises.length; // Loop back to the first exercise
+        displayExercise();
+    });
+
+    // Start the first exercise
+    displayExercise();
+</script>
+
+</body>
+</html>
+
+
+
